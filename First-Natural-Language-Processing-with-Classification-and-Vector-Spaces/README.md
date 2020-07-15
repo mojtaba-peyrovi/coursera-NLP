@@ -42,8 +42,79 @@ $$
 it means for tweet m, we have three features, 1 is the bias, sum of the frequency of the words repeated in posFreq, and sum of the frequency of the words repeated in negFreq.
 Example: for the tweet: I am sad, I am not learning NLP. given the  posFreq will be 3+3+1+1+0+0  (check the video) and for negFreq we get 11. so for this tweet, the features will be [1,8,11]
 
+#### Preprocessing:
+For preprocessing the text, we should do two steps. 
 
+- **Stop words and Punctionation:** for this step we should first find the words and punctuation marks that don't add significant meaning to the sentence. We should compare the sentence with two lists:
+1- Stop word
+2- Punctuations
+and all of the stopwords and punctuations will be removed from the sentence. Most of the time hyperlinks and handles also don't add any meaning to the sentence.
+For example, this tweet: 
+> @AndrewYNg @YMourri tuning GREAT AI model https://deeplearning.ai
 
+After preprocssing will look like this:
+> tuning GREAT AI model
+
+The second thing you have to implement is **stemming** which means transforming each word in its stem. stem is the set of characters that are used to construct the word and its derivatives. for example for the word "tuning" the stem is "tun". because adding e would make the word tune, adding ing makes it tuning, etc.
+We do this technique to reduce the vocabulary size.
+
+The third thing we need to do, is to **lowercase** all the words. For example we convert GREAT to great. 
+After doing all these steps, the final sentence would be like this:
+> [tun, great, ai, model]
+> 
+### Tokenize the string[](https://iyninneg.coursera-apps.org/notebooks/NLP_C1_W1_lecture_nb_01.ipynb#Tokenize-the-string)
+
+To tokenize means to split the strings into individual words without blanks or tabs. In this same step, we will also convert each word in the string to lower case. The  [tokenize](https://www.nltk.org/api/nltk.tokenize.html#module-nltk.tokenize.casual)  module from NLTK allows us to do these easily:
+ 
+### Conclusion:
+Let's put all we learned together. We have a set of m tweets. We will have to implement the preprocessing for each one of the tweets and convert each of them to a list of words. Then, we extract features for each tweet using a **frequency dictionary mapping.**  e.g. "I am happy Because I am learning NLP @Deeplearning" will be converted to [happy, learn, nlp] and the frequency matrix will be [1,40,20]
+At the end we will have a matrix of m rows and three columns:
+$$
+\begin{bmatrix}
+1 & X_{1}^{(1)} & X_{2}^{(1)} \\ 
+1 & X_{1}^{(2)} & X_{2}^{(2)} \\ 
+. & . & .\\ 
+ .& . & .\\ 
+. &.  & . \\
+1 & X_{1}^{(m)} & X_{2}^{(m)}
+\end{bmatrix}
+$$
+Where each row will be associated to a tweet.
+
+### Testing the model:
+We imagine we ran the logistic regression model already and calculated parameters (thetas)
+Now for each tweet and its theta we have the prediction like this:
+$$
+pred = h(X_{val}, \theta) \geq 0.5
+$$
+because we are using Sigmoid function. For example, if we have h(x) values for each tweet as below:
+$$
+\begin{bmatrix}
+0.3\\ 
+0.5\\ 
+0.7\\ 
+.\\
+.\\
+h_{m}
+\end{bmatrix}
+$$
+We compare them one by one against 0.5, and if its bigger we have 1, if smaller 0:
+$$
+\begin{bmatrix}
+0\\ 
+1\\ 
+1\\ 
+1\\ 
+.\\
+.\\
+pred_{m}
+\end{bmatrix}
+$$
+Then we compare the prediction values (the above matrix) vs the real values, and we have a new matrix with the comparisons. If the values match, we return 1, if not we return 0. 
+$$
+\sum_{i=1}^{m}\frac{(pred^{(i)} == y_{val}^{(i)})}{m}
+$$
+the sigma above, sums up all zero and ones (showing the total times the prediction was correct), and divides them by total number of tweets, and returns the accuracy percentage.
 
 
 
