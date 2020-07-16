@@ -3,7 +3,7 @@
 ## Coursera NLP by deeplearning.ai
 
 ### Course 1: Classification and Vector Spaces:
-- Week1:
+- Week1 - Sentiment analysis with logistic regression:
 In order to create a sentiment analysis on a tweet using logistic regression, we need to follow the steps below:
 1- extract features from the text
 2- train the logistic regression classifier based on the features X
@@ -116,11 +116,42 @@ $$
 $$
 the sigma above, sums up all zero and ones (showing the total times the prediction was correct), and divides them by total number of tweets, and returns the accuracy percentage.
 
+- Week2 - Naive Bayes:
+Imagine we have a corpus of positive and negative tweets. If A is labeled as a positive tweet, the probability of the tweet being positive is:
+$$
+<img src="https://render.githubusercontent.com/render/math?math=P(A) = P(Positive) = N_{pos} / N ">
+$$
+means the count of positive labelled tweets, divide by the number of all tweets in the corpus. 
 
+Now, if there is a tweet B that contains the word "Happy" but tagged in both positive and negative tweets, like the photo word-happy-case.jpg, the probability of a word to contain the word "happy" and also being positive is the area of intersection divided by the area of the whole corpus. For example if there is 20 tweets, and three of them contain the word and also labelled positive, the probability will be 3/20 = 0.15
 
+If we just consider the tweets that contain the word "happy" and as we see, three of them are labelled positive, and one is labelled negative, as seen in photo bayes-rules.jpg, then the probability of the tweet being positive and containing the word will be 3/4 = 0.75	
+This simply means if we have a tweet, based on this training dataset, the likelihood of a tweet to be positive, if it contains the word "Happy", is 75%.
 
+We can also calculate the probability of a tweet to be contain the word "Happy" if it is positive. photo: bayes-rules-2.jpg
+In this case we have 13 tweets in total, and three of them have the word "Happy" so the probability will be 3/13 = 0.231
 
+If we combine these two probabilities we can get the final definition of Bayes Rules seen at photo: bayes-rules-3.jpg
 
+We can make is simpler by algebra and say Bayes Rule as:
+P(X|Y) = P(Y|X) * (P(X)/P(Y))
+Simply, **Bayes' Rule** is based on mathematical formulation of conditional probabilities. 
+Using this formula, we can calculate the probability of X if Y, if we have the probability of Y if X, and the ones of X and Y separately.
+
+It is called Naive because it assumes that the features we used in logistic regression are independent and I think it means it doesn't care for the features just calculates the probabilities. 
+
+To implement it we need to to the following steps:
+1- count the unique words in all the corpus
+2- count the repetition of each word in both positive and negative tweets.
+3- sum up all positive counts and negative counts.
+4- then we create a new table called the table of conditional probabilities, in which every word in the vocabulary list, will have a P(word|Positive) and P(word|negative)  as seen in photo bayes-steps-1.jpg. In this table, the sum of positive values will be 1, so will the negative column.
+5- In this table, the words with almost equal probability, don't add anything to the sentiment. What are really important to the model, are the words with big difference.
+6- Now we should calculate the product of positive over negative of each word and if the final result is bigger than one we say its moer probable for the sentence to be positive than negative. photo: bayes-steps-2.jpg (This value is called **Naive Bayes inference condition rule for binary classification**)
+
+#### One more issue to solve with Naive Bayes:
+No probability in the original formula should be zero. In order to avoid zeros, we will slightly change the main formula and it is called **Laplacian Smoothing.** The formula is in the photo laplacian-smoothing.jpg
+Now, back to the same example, instead of original naive bayes, we can calculate the probabilities using Laplacian smoothing. photo laplacian-smoothing-implementation.jpg
+After laplacian smoothing, no probability will be zero. 
 
 
 > Written with [StackEdit](https://stackedit.io/).
