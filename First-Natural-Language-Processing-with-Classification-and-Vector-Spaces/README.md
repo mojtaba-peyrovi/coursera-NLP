@@ -13,12 +13,10 @@ In order to create a sentiment analysis on a tweet using logistic regression, we
  Then for each tweet, we can do **Feature Extraction.** to do so, we need to see what words in the vocabulary list appears in the tweet. For each word in V, if the value exist in the tweet, we assign value 1 to it, and if doesn't exist, we assign values of 0. Of course, the matrix containing the features has so many zeros and will be considered a **Sparse** representation.
 
 #### Problems with sparse representation:
-We have a large list of 0-1 which is as big as the length of the V vector.
+We have a large list of 0-1 which is as big as the length of the V vector.</br>
 
-$$
-[\theta _{1}, \theta _{2}, \theta _{3}, ... , \theta _{n}] 
-, n = \left | V \right |
-$$
+<img src="https://render.githubusercontent.com/render/math?math=[\theta _{1}, \theta _{2}, \theta _{3}, ... , \theta _{n}] , n = \left | V \right |"></br>
+
 it will cause:
 1- Large training time
 2- Large prediction time
@@ -36,9 +34,9 @@ We do the same thing for negative classes. and the end result will be a dictiona
 
 Now for each tweet, we can extract the features like this:
 
-$$
-X_{m} = [1, \sum_{w}^{}freqs(w,1), \sum_{w}freqs(w,0) ]
-$$
+
+<img src="https://render.githubusercontent.com/render/math?math=X_{m} = [1, \sum_{w}^{}freqs(w,1), \sum_{w}freqs(w,0)]">
+
 it means for tweet m, we have three features, 1 is the bias, sum of the frequency of the words repeated in posFreq, and sum of the frequency of the words repeated in negFreq.
 Example: for the tweet: I am sad, I am not learning NLP. given the  posFreq will be 3+3+1+1+0+0  (check the video) and for negFreq we get 11. so for this tweet, the features will be [1,8,11]
 
@@ -83,44 +81,29 @@ Where each row will be associated to a tweet.
 
 ### Testing the model:
 We imagine we ran the logistic regression model already and calculated parameters (thetas)
-Now for each tweet and its theta we have the prediction like this:
-$$
-pred = h(X_{val}, \theta) \geq 0.5
-$$
-because we are using Sigmoid function. For example, if we have h(x) values for each tweet as below:
-$$
-\begin{bmatrix}
-0.3\\ 
-0.5\\ 
-0.7\\ 
-.\\
-.\\
-h_{m}
-\end{bmatrix}
-$$
+Now for each tweet and its theta we have the prediction like this:</br>
+
+<img src="https://render.githubusercontent.com/render/math?math=pred = h(X_{val}, \theta) \geq 0.5" width="200"></br>
+
+because we are using Sigmoid function. For example, if we have h(x) values for each tweet as below: </br>
+
+<img src="https://render.githubusercontent.com/render/math?math=\begin{bmatrix}0.3\\ 0.5\\ 0.7\\ .\\.\\h_{m}\end{bmatrix}"></br>
+
 We compare them one by one against 0.5, and if its bigger we have 1, if smaller 0:
-$$
-\begin{bmatrix}
-0\\ 
-1\\ 
-1\\ 
-1\\ 
-.\\
-.\\
-pred_{m}
-\end{bmatrix}
-$$
+
+<img src="https://render.githubusercontent.com/render/math?math=\begin{bmatrix}0\\1\\1\\1\\.\\.\\pred_{m}\end{bmatrix}">
+
 Then we compare the prediction values (the above matrix) vs the real values, and we have a new matrix with the comparisons. If the values match, we return 1, if not we return 0. 
-$$
-\sum_{i=1}^{m}\frac{(pred^{(i)} == y_{val}^{(i)})}{m}
-$$
+
+<img src="https://render.githubusercontent.com/render/math?math=\sum_{i=1}^{m}\frac{(pred^{(i)} == y_{val}^{(i)})}{m}" width="200">
+
 the sigma above, sums up all zero and ones (showing the total times the prediction was correct), and divides them by total number of tweets, and returns the accuracy percentage.
 
 - Week2 - Naive Bayes:
 Imagine we have a corpus of positive and negative tweets. If A is labeled as a positive tweet, the probability of the tweet being positive is:
-$$
-<img src="https://render.githubusercontent.com/render/math?math=P(A) = P(Positive) = N_{pos} / N ">
-$$
+
+<img src="https://render.githubusercontent.com/render/math?math=P(A) = P(Positive) = N_{pos} / N" width="300">
+
 means the count of positive labelled tweets, divide by the number of all tweets in the corpus. 
 
 Now, if there is a tweet B that contains the word "Happy" but tagged in both positive and negative tweets, like the photo word-happy-case.jpg, the probability of a word to contain the word "happy" and also being positive is the area of intersection divided by the area of the whole corpus. For example if there is 20 tweets, and three of them contain the word and also labelled positive, the probability will be 3/20 = 0.15
@@ -152,6 +135,29 @@ To implement it we need to to the following steps:
 No probability in the original formula should be zero. In order to avoid zeros, we will slightly change the main formula and it is called **Laplacian Smoothing.** The formula is in the photo laplacian-smoothing.jpg
 Now, back to the same example, instead of original naive bayes, we can calculate the probabilities using Laplacian smoothing. photo laplacian-smoothing-implementation.jpg
 After laplacian smoothing, no probability will be zero. 
+
+### Log Likelihood: 
+#### Ratio of Probability:
+IN photo bayes_step_2.jpg, we calculated the Niave bayes inference condition rule for binary classification which is called the **Log Likelihood**. Now, we have a table with a percentage of frequency for each word and since we use Laplacian smoothing, none of the frequency values is zero. 
+Now we can calculate the ratio of probability like this: </br>
+<img src="https://render.githubusercontent.com/render/math?math=\ratio(W_{i}) = \frac{P(W_{i}|Pos)}{P(W_{i}|Neg)}" width="250" class="center"></br>
+
+This ration will be more than 1 for positive, less than 1 for negative, and equal to one will show neutral words. And in order to avoid division by zero, we can write it like this:
+$$
+\ratio P(W_{i}) = \frac{P(W_{i}|1) + 1}{P(W_{i}|0) + 1}
+$$
+The final formula for the naive bayes, is the multiplication of two fractions, one is called **Prior Ratio** and the other one is **Log Likelihood.** photo: final_naive_bayes_formula.jpg
+
+- when we run this algo, we may face the risk of underflow which is the product of numbers less than zero for several time have a very tiny result that computers cannot save it. To avoid this, we use logarithm.
+photo: fix_underflow_issue.jpg
+
+- The log of Log Likelihood is called **Lambda** and the photo: calculate_lambda.jpg shows how to calculate it.
+- photo log_likelihood_sample_calculation.jpg shows an example of calculating log likelihood.
+**IMPORTANT:** The prior ratio for balanced datasets(where the number of pos and neg words is equal) will be zero. but for unbalanced datasets, this value will be important.
+
+### How to test the model?
+We simply expose the model to a new tweet which has not been used for training the model. We have lambda values, and the prior ratio, so we can calculate the log likelihood. If a word does not exist in the frequency dictionary, we consider them as neutral.
+The photo naive_bayes_testing.jpg has the summary of the steps to calculate the sentiment of the testing tweet.
 
 
 > Written with [StackEdit](https://stackedit.io/).
