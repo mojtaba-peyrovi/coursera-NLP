@@ -159,5 +159,18 @@ photo: fix_underflow_issue.jpg
 We simply expose the model to a new tweet which has not been used for training the model. We have lambda values, and the prior ratio, so we can calculate the log likelihood. If a word does not exist in the frequency dictionary, we consider them as neutral.
 The photo naive_bayes_testing.jpg has the summary of the steps to calculate the sentiment of the testing tweet.
 
+- Week3 - Vector Space Models:
 
-> Written with [StackEdit](https://stackedit.io/).
+Vector Space Models help us recognize if two sentences are similar in meaning even if they don't look similar and don't share the same words. It can also capture dependencies between words. 
+Vector models are used in feature extraction to answer the questions of who? why? where? when?
+This technique captures the context around each word in the text, therefore it captures the relative meaning.
+### Co-Occurrence: 
+**1- Word by Word approach:**
+The co-occurrence of two different words is the number of times they appear together in the corpus within a specific distance K. 
+(check this photo: word-by-word-co-occurrence.jpg)
+It shows that if we have k=2, the word "data" is related to the word "simple" with number 2 because two times in the corpus simple has been within the distance of 2 words from "data". For the example in the photo, the vector representation of the word "data" is [2, 1, 1, 0]
+The vector representation has n entries which can be between one, and the size of the vocabulary. 
+
+**2- Word by document approach:**
+For this technique, we count the number of times each word is repeated in docs in the corpus with specific tags. this is the photo: 
+(word-by-doc-co-occurrence.jpg)
