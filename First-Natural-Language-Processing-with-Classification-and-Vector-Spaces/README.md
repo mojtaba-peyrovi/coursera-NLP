@@ -174,3 +174,34 @@ The vector representation has n entries which can be between one, and the size o
 **2- Word by document approach:**
 For this technique, we count the number of times each word is repeated in docs in the corpus with specific tags. this is the photo: 
 (word-by-doc-co-occurrence.jpg)
+If we make the co-occurrence matrix for two sample words of "data" and "film" then we can create a vector space with two coordinates, one for each and we can represent the 	matrix values like we see in the image: vector-space-word-to-doc.jpg
+The image shows that the ML, and Economy documents are much more similar. but if the dimensions are higher it's not this easy to capture this. Later in this course we learn how to calculate the distance and angle between each vector.
+
+### Euclidean Distance:
+The Euclidean distance is the length of the line, connecting the end of two vectors.  photo: eucledean_distance.jpg
+For  more than two dimensions, we do the same thing which is taking the square root of the sum of squares. (eucledean_distance_n_dimension.jpg)
+In algebra it is called the Norm.
+#### Calculating the norm in Py:
+very simple:
+```python
+v = np.array([1,2,3])
+w = no.array([4,5,6])
+d = np.linalg.norm(v-w)
+```
+The shorter the d (euclidean distance or the norm) is, the more similar the documents are.
+
+### Cosine Similarity:
+Sometimes the euclidean distance doesnt work because of the number of docs are not the same and it makes a problem. But cosine similarity will calculate the cosine of the angle between two vectors. see photo: euclidean-vs-cosine-similarity.jpg
+
+Cosine similarity is not biased by the size of the vector. but Euclidean is.
+Here is how we calculate the cosine similarity:
+photo: cosine-similarity-calculation.jpg
+ > The closer the cosine value between two vectors is to 1, the more similar the vectors are. And the closer it is to zero, the less similar the vectors are.
+
+### Principle Component Analysis (CPA)
+Sometimes we are interested to reduce the dimensions of the vector. For doing this, we should find the uncorrelated dimensions to the data, and remove them. 
+
+#### Eigenvector: 
+Uncorrelated features to your data,.
+#### Eigenvalue:
+The amount of information retained by each feature.
