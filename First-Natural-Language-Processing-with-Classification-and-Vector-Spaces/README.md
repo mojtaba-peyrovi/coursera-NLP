@@ -174,6 +174,7 @@ The vector representation has n entries which can be between one, and the size o
 **2- Word by document approach:**
 For this technique, we count the number of times each word is repeated in docs in the corpus with specific tags. this is the photo: 
 (word-by-doc-co-occurrence.jpg)
+
 If we make the co-occurrence matrix for two sample words of "data" and "film" then we can create a vector space with two coordinates, one for each and we can represent the 	matrix values like we see in the image: vector-space-word-to-doc.jpg
 The image shows that the ML, and Economy documents are much more similar. but if the dimensions are higher it's not this easy to capture this. Later in this course we learn how to calculate the distance and angle between each vector.
 
@@ -205,3 +206,20 @@ Sometimes we are interested to reduce the dimensions of the vector. For doing th
 Uncorrelated features to your data,.
 #### Eigenvalue:
 The amount of information retained by each feature.
+
+- There is another method in Sklearn called t-SNE to reduce the dimensions.
+
+### Idea1 for HL:
+We have the word embedding for Thai words. we can calculate the similarity between keywords we have in google for the specific industry, then make recommendation for thai keywords with the most similar meanings to the specific content.
+
+
+[link]([https://github.com/mmihaltz/word2vec-GoogleNews-vectors](https://github.com/mmihaltz/word2vec-GoogleNews-vectors)) to Google News word embedding.
+
+Another link here:
+[https://code.google.com/archive/p/word2vec/](https://code.google.com/archive/p/word2vec/)
+
+Link to the dataset of 100 billion words by Google News
+https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing
+
+
+> Written with [StackEdit](https://stackedit.io/).
