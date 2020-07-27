@@ -222,4 +222,88 @@ Link to the dataset of 100 billion words by Google News
 https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing
 
 
+- Week4 - Transforming Word Vectors:
+
+#### Transforming Vectors: 
+Here is how we transform a vector to another one:
+```python
+R = np.array([[2,0],[0,-2]])
+x = np.array([[1,1]])
+transformed = np.dot(x, R)
+>> Result: x is (1x2) and R is (2x2) ==> the result will be (1x2)
+```
+The transformation matrix is called **"Transformation Matrix".**
+A good example of using it is translating a vector for an English word, into a French vector to translate the word from English to French.
+
+We can create a subset of translations between the two languages, then using this transformation matrix, we can find the translation for any word.
+
+photo: transformation_matrix_improvement.jpg shows how to start with a random R matrix, then in a loop try to minimize the loss function but comparing the translation with the real values.  (Transcript F means calculating the norm of the matrix, which is also called ** Frobenius Norm.**)  - photo: frobenius-norm.jpg
+
+Here is how we calculate it in Python:
+```python 
+A = np.array([[2,2], [2,2]])
+A_squared = np.square(A)
+A_forbenius = np.sqrt(np.sum(A_squared))
+```
+By calculating the derivative of the loss function (frobenius norm) we calculate the gradient, which we are aiming to minimize it.
+photo: gradient-formula.jpg
+
+### Rotation Matrix:
+There is a formula to transform the vector using the transformation matrix in counterclockwise direction having the degree theta. Here is the code:
+```python
+angle = 100 * (np.pi / 180) #convert degrees to radians
+
+Ro = np.array([[np.cos(angle), -np.sin(angle)],
+              [np.sin(angle), np.cos(angle)]])
+
+x2 = np.array([2, 2]).reshape(1, -1) # make it a row vector
+y2 = np.dot(x2, Ro)
+
+print('Rotation matrix')
+print(Ro)
+print('\nRotated vector')
+print(y2)
+
+print('\n x2 norm', np.linalg.norm(x2))
+print('\n y2 norm', np.linalg.norm(y2))
+print('\n Rotation matrix norm', np.linalg.norm(Ro))
+```
+Using this function, we calculated the rotation matrix.
+
+The norm of any R^2 rotation matrix is always 2⎯⎯√=1.414221
+
+- What we need to remember, is using R matrix to translate the English word's vector to the counterpart French word vector, the transformed matrix doesn't have to be necessarily identical to a word in the French corpus. We need to use K-nearest neighbors to find the closest meanings.
+
+### Hash Tables:
+In order not to search for all the words list to find the appropriate or closest translation, we can find categories to search within them rather than comparing the sample with the full list. 
+For doing this we use hash functions to bucketize the values. 
+#### Locality Sensitive Hashing:
+We can define has functions which are able to categorize the values which are closer to each other in one group.
+
+In order to do this, we define multiple planes, (dividers) and check if the sample is above each plane or below, and based on that we calculate the total hash. 
+check this photo: hash-table-from-multiple-plane.jpg
+Here is the code to find the hash value given the planes and a vector:
+```python
+def hash_multiple_plane(p_l, v):
+    hash_value = 0
+    for i,p in enumerate(p_l):
+        sign = side_of_plane(p, v)
+        hash_i = 1 if sign >= 0 else 0
+        hash_value += 2**i * hash_i
+    return hash_value    
+```
+
+side_of_plane function is defined like this:
+```python
+def side_of_plane(P, v):
+    dotproduct = np.dot(P, v.T)
+    sign_of_dot_product = np.sign(dotproduct)
+    sign_of_dot_product_scalar = np.asscalar(sign_of_dot_product)
+    return sign_of_dot_product_scalar
+```
+- We can convert a document into a vector by summing up element wise, the vectors for each word. Then we can use KNN, to search the document. photo: word-vectors-to-doc-vector.jpg and here  (code-to-doc-vector.jpg) is the code for making the document vector.
+
+KNN can find documents, or sentence with similar meanings.
+
+
 > Written with [StackEdit](https://stackedit.io/).
