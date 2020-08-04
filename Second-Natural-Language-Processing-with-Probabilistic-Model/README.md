@@ -64,4 +64,60 @@ edits :  ['earz', 'darz', 'derz', 'deaz', 'dear']
 candidate words :  ['dear']
 ```
 
+### Minimum Edit Distance:
+This is a tool to find out how similar two words or strings are. Given two words or strings, minimum edit distance is the minimum number of operations needed to transform one string into another. use cases are: spelling correction, document similarity, and machine translation, DNA sequencing. 
+
+For editing, we use three different operations:
+1- Insert
+2- Delete
+3- Replace
+for example for converting "play" to "stay" we need to replace "p" to "s" and "l" to "t". so the number of operations will be two. 
+### Operation Cost:
+For each type of operation we consider the cost of insert as 1, cost of delete 1, and cost of replace 2. like this:
+{ "insert":1, "delete":1, "replace":2}
+
+In finding the minimum edit distance, we are trying to minimize the cost, which is the sum of all operation costs.
+photo: simple_minimum_distance_calculation.jpg
+
+### Algorithm:
+We create a matrix where rows will be the source string and columns will be the target string.
+We need to fill out a distance matrix (D) such that the distance matrix D[2,3] is the distance the beginning of the source to character 2, and from the beginning to character 3 in the target string.  We show it in python like this:
+```python
+D[2,3] = source[:2] -> target[:3]
+or
+D[i,j] = source[:i] -> target[:j]
+```
+photo: distance-matrix.jpg
+In order to fill the matrix with all transformation costs per character, we start from the top left corner, and calculate for the smallest number of characters (# which is zero) then we add 1, then 2, etc. to till the end of it. calculating the diagonal numbers has three ways:
+1- delete then insert
+2- insert then delete
+3- delete and insert at the same time
+we can calculate the cost for each method and use the minimum of them as the final cost. then we add one more character and keep doing the same calculations. photo: cost-matrix-simple.jpg
+
+#### The formulaic approach:
+after filling the first four cells on the top left corner, here is what we do for the rest of the cells:
+1- **fillout the top and left edges:** we can use this formula:
+```python
+D[i,j] = D[i-1,j] + del_cost  # for the left column
+D[i,j] = D[i, j-1] + ins_cost  # for the top row 
+```
+2- **calculate the rest of the cells:** the calculation is like this:
+calculate the following three costs:
+
+- D[i-1,j] + del_cost
+- D[i,j-1] + ins_cost
+- D[i-1,j-1] + rep_cost  // if the characters are the same, the replacement cost will be zero
+
+Then find the minimum of them.
+photo: minimum-edit-distance-formula.jpg
+
+When we input all numbers and add heatmap effect to it, we see that from the middle of the matrix to the end, we don't need any change. so, the numbers will repeat without any cost being added to them. (the reason is in this example both words end with "ay"
+photo:minimum-edit-dictance-heatmap.jpg
+This method is also called **Levennshtein.**
+
+In order to program this, we use **Dynamic Programming** or **Recursive programming** which solves the problem for a small portion, then uses the result of it to calculate the next iterations.
+
+
+
+
 > Written with [StackEdit](https://stackedit.io/).
