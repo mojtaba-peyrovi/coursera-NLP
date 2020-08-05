@@ -117,6 +117,13 @@ This method is also called **Levennshtein.**
 
 In order to program this, we use **Dynamic Programming** or **Recursive programming** which solves the problem for a small portion, then uses the result of it to calculate the next iterations.
 
+### Assignment notes:
+[THIS](https://norvig.com/spell-correct.html](https://norvig.com/spell-correct.html)) article has the whole code in Python.
+
+photo: python-list-comprehension.png is a good review of list comprehension in Python.
+
+photo: python-list-comprehension_word_splits.png shows how to write word splits in list comprehension.
+
 
 
 
