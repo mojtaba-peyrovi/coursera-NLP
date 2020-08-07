@@ -77,7 +77,7 @@ For each type of operation we consider the cost of insert as 1, cost of delete 1
 { "insert":1, "delete":1, "replace":2}
 
 In finding the minimum edit distance, we are trying to minimize the cost, which is the sum of all operation costs.
-photo: simple_minimum_distance_calculation.jpg
+<img src="simple_minimum_distance_calculation.jpg">
 
 ### Algorithm:
 We create a matrix where rows will be the source string and columns will be the target string.
