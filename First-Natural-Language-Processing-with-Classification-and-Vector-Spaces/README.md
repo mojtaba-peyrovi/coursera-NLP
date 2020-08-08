@@ -3,7 +3,7 @@
 ## Coursera NLP by deeplearning.ai
 
 ### Course 1: Classification and Vector Spaces:
-- Week1 - Sentiment analysis with logistic regression:
+__Week1 - Sentiment analysis with logistic regression:__
 In order to create a sentiment analysis on a tweet using logistic regression, we need to follow the steps below:
 1- extract features from the text
 2- train the logistic regression classifier based on the features X
@@ -99,7 +99,7 @@ Then we compare the prediction values (the above matrix) vs the real values, and
 
 the sigma above, sums up all zero and ones (showing the total times the prediction was correct), and divides them by total number of tweets, and returns the accuracy percentage.
 
-- Week2 - Naive Bayes:
+__Week2 - Naive Bayes:__
 Imagine we have a corpus of positive and negative tweets. If A is labeled as a positive tweet, the probability of the tweet being positive is:
 
 <img src="https://render.githubusercontent.com/render/math?math=P(A) = P(Positive) = N_{pos} / N" width="300">
@@ -138,7 +138,7 @@ After laplacian smoothing, no probability will be zero.
 
 ### Log Likelihood: 
 #### Ratio of Probability:
-IN photo bayes_step_2.jpg, we calculated the Niave bayes inference condition rule for binary classification which is called the **Log Likelihood**. Now, we have a table with a percentage of frequency for each word and since we use Laplacian smoothing, none of the frequency values is zero. 
+In photo bayes_step_2.jpg, we calculated the Niave bayes inference condition rule for binary classification which is called the **Log Likelihood**. Now, we have a table with a percentage of frequency for each word and since we use Laplacian smoothing, none of the frequency values is zero. 
 Now we can calculate the ratio of probability like this: </br>
 <img src="https://render.githubusercontent.com/render/math?math=\ratio(W_{i}) = \frac{P(W_{i}|Pos)}{P(W_{i}|Neg)}" width="250" class="center"></br>
 
@@ -146,20 +146,25 @@ This ration will be more than 1 for positive, less than 1 for negative, and equa
 $$
 \ratio P(W_{i}) = \frac{P(W_{i}|1) + 1}{P(W_{i}|0) + 1}
 $$
-The final formula for the naive bayes, is the multiplication of two fractions, one is called **Prior Ratio** and the other one is **Log Likelihood.** photo: final_naive_bayes_formula.jpg
+The final formula for the naive bayes, is the multiplication of two fractions, one is called **Prior Ratio** and the other one is **Log Likelihood.** 
+<img src="final_naive_bayes_formula.JPG">
 
 - when we run this algo, we may face the risk of underflow which is the product of numbers less than zero for several time have a very tiny result that computers cannot save it. To avoid this, we use logarithm.
-photo: fix_underflow_issue.jpg
+<img src="fix_underflow_issue.JPG">
 
-- The log of Log Likelihood is called **Lambda** and the photo: calculate_lambda.jpg shows how to calculate it.
-- photo log_likelihood_sample_calculation.jpg shows an example of calculating log likelihood.
+- The log of Log Likelihood is called **Lambda** and this photo shows how to calculate it.
+<img src="calculate_lambda.JPG">
+
+An example of calculating log likelihood.
+<img src="log_likelihood_sample_calculation.JPG">
 **IMPORTANT:** The prior ratio for balanced datasets(where the number of pos and neg words is equal) will be zero. but for unbalanced datasets, this value will be important.
 
 ### How to test the model?
 We simply expose the model to a new tweet which has not been used for training the model. We have lambda values, and the prior ratio, so we can calculate the log likelihood. If a word does not exist in the frequency dictionary, we consider them as neutral.
-The photo naive_bayes_testing.jpg has the summary of the steps to calculate the sentiment of the testing tweet.
+The following photo has the summary of the steps to calculate the sentiment of the testing tweet.
+<img src="naive_bayes_testing.JPG">
 
-- Week3 - Vector Space Models:
+__Week3 - Vector Space Models:__
 
 Vector Space Models help us recognize if two sentences are similar in meaning even if they don't look similar and don't share the same words. It can also capture dependencies between words. 
 Vector models are used in feature extraction to answer the questions of who? why? where? when?
@@ -167,20 +172,21 @@ This technique captures the context around each word in the text, therefore it c
 ### Co-Occurrence: 
 **1- Word by Word approach:**
 The co-occurrence of two different words is the number of times they appear together in the corpus within a specific distance K. 
-(check this photo: word-by-word-co-occurrence.jpg)
+<img src="word-by-word-co-occurrence.JPG">
 It shows that if we have k=2, the word "data" is related to the word "simple" with number 2 because two times in the corpus simple has been within the distance of 2 words from "data". For the example in the photo, the vector representation of the word "data" is [2, 1, 1, 0]
 The vector representation has n entries which can be between one, and the size of the vocabulary. 
 
 **2- Word by document approach:**
-For this technique, we count the number of times each word is repeated in docs in the corpus with specific tags. this is the photo: 
-(word-by-doc-co-occurrence.jpg)
+For this technique, we count the number of times each word is repeated in docs in the corpus with specific tags. this is the <img src="word-by-doc-co-occurrence.JPG">
 
 If we make the co-occurrence matrix for two sample words of "data" and "film" then we can create a vector space with two coordinates, one for each and we can represent the 	matrix values like we see in the image: vector-space-word-to-doc.jpg
 The image shows that the ML, and Economy documents are much more similar. but if the dimensions are higher it's not this easy to capture this. Later in this course we learn how to calculate the distance and angle between each vector.
 
 ### Euclidean Distance:
-The Euclidean distance is the length of the line, connecting the end of two vectors.  photo: eucledean_distance.jpg
-For  more than two dimensions, we do the same thing which is taking the square root of the sum of squares. (eucledean_distance_n_dimension.jpg)
+The Euclidean distance is the length of the line, connecting the end of two vectors.  
+<img src="eucledean_distance.JPG">
+For  more than two dimensions, we do the same thing which is taking the square root of the sum of squares. 
+<img src="eucledean_distance_n_dimension.JPG">
 In algebra it is called the Norm.
 #### Calculating the norm in Py:
 very simple:
@@ -192,11 +198,12 @@ d = np.linalg.norm(v-w)
 The shorter the d (euclidean distance or the norm) is, the more similar the documents are.
 
 ### Cosine Similarity:
-Sometimes the euclidean distance doesnt work because of the number of docs are not the same and it makes a problem. But cosine similarity will calculate the cosine of the angle between two vectors. see photo: euclidean-vs-cosine-similarity.jpg
+Sometimes the euclidean distance doesnt work because of the number of docs are not the same and it makes a problem. But cosine similarity will calculate the cosine of the angle between two vectors. 
+<img src="euclidean-vs-cosine-similarity.JPG">
 
 Cosine similarity is not biased by the size of the vector. but Euclidean is.
 Here is how we calculate the cosine similarity:
-photo: cosine-similarity-calculation.jpg
+<img src="cosine-similarity-calculation.JPG">
  > The closer the cosine value between two vectors is to 1, the more similar the vectors are. And the closer it is to zero, the less similar the vectors are.
 
 ### Principle Component Analysis (CPA)
@@ -221,7 +228,6 @@ Another link here:
 Link to the dataset of 100 billion words by Google News
 https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing
 
-
 - Week4 - Transforming Word Vectors:
 
 #### Transforming Vectors: 
@@ -237,7 +243,9 @@ A good example of using it is translating a vector for an English word, into a F
 
 We can create a subset of translations between the two languages, then using this transformation matrix, we can find the translation for any word.
 
-photo: transformation_matrix_improvement.jpg shows how to start with a random R matrix, then in a loop try to minimize the loss function but comparing the translation with the real values.  (Transcript F means calculating the norm of the matrix, which is also called ** Frobenius Norm.**)  - photo: frobenius-norm.jpg
+<img src="transformation_matrix_improvement.JPG"> 
+the photo shows how to start with a random R matrix, then in a loop try to minimize the loss function but comparing the translation with the real values.  (Transcript F means calculating the norm of the matrix, which is also called ** Frobenius Norm.**)  
+<img src="frobenius-norm.JPG">
 
 Here is how we calculate it in Python:
 ```python 
@@ -246,7 +254,7 @@ A_squared = np.square(A)
 A_forbenius = np.sqrt(np.sum(A_squared))
 ```
 By calculating the derivative of the loss function (frobenius norm) we calculate the gradient, which we are aiming to minimize it.
-photo: gradient-formula.jpg
+<img src="gradient-formula.JPG">
 
 ### Rotation Matrix:
 There is a formula to transform the vector using the transformation matrix in counterclockwise direction having the degree theta. Here is the code:
@@ -281,7 +289,8 @@ For doing this we use hash functions to bucketize the values.
 We can define has functions which are able to categorize the values which are closer to each other in one group.
 
 In order to do this, we define multiple planes, (dividers) and check if the sample is above each plane or below, and based on that we calculate the total hash. 
-check this photo: hash-table-from-multiple-plane.jpg
+
+<img src="hash-table-from-multiple-plane.JPG">
 Here is the code to find the hash value given the planes and a vector:
 ```python
 def hash_multiple_plane(p_l, v):
@@ -301,9 +310,12 @@ def side_of_plane(P, v):
     sign_of_dot_product_scalar = np.asscalar(sign_of_dot_product)
     return sign_of_dot_product_scalar
 ```
-- We can convert a document into a vector by summing up element wise, the vectors for each word. Then we can use KNN, to search the document. photo: word-vectors-to-doc-vector.jpg and here  (code-to-doc-vector.jpg) is the code for making the document vector.
+- We can convert a document into a vector by summing up element wise, the vectors for each word. Then we can use KNN, to search the document. 
+<img src="word-vectors-to-doc-vector.JPG">
+and here:
+<img src="code-to-doc-vector.JPG">
+ is the code for making the document vector.
 
 KNN can find documents, or sentence with similar meanings.
-
 
 > Written with [StackEdit](https://stackedit.io/).
