@@ -126,6 +126,23 @@ following photo is a good review of list comprehension in Python.
 the photo below shows how to write word splits in list comprehension.
 <img src="python-list-comprehension_word_splits.png">
 
+__Week2: Part of Speech Tagging (POS tagging):__
+
+Part of speech refers to the category of words or the lexical term(noun, verb, adjective, etc.)  in the language.
+<img src="part-of-speech-example.JPG">
+
+__Some applications of POS tagging:__
+1- Named entities like Eifel tower and Paris in the sentence: Eifel tower is located in Paris.
+2- Co-reference resolution: when we say Eifel tower is located in Paris. It is 324 meters. This method can tell "it" refers to the Eifel.
+3- Speech recognition.
+
+
+
+#### The notebook notes:
+This [link](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html) has the list of all tag abbreviations.
+
+__defaultdict:__ It is a special type of dictionary that returns 0 if the key doesn't exist. 
+__string library:__ string.punctuation returns punctuation marks. [(docs)](https://docs.python.org/3/library/string.html)
 
 
 
