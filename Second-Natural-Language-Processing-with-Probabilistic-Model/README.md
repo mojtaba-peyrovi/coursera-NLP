@@ -144,6 +144,87 @@ This [link](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_p
 __defaultdict:__ It is a special type of dictionary that returns 0 if the key doesn't exist. 
 __string library:__ string.punctuation returns punctuation marks. [(docs)](https://docs.python.org/3/library/string.html)
 
+#### Markov Chains:
+When we have a sentence like "Why not learn English?" We want to know what type of word (tag) would be suitable right after a verb. It's more likely to be a noun. So we can say:
+>  The likelihood  of the next word's POS in a sentence, tends to depend of the POS of the previous word.
+
+The image below shows the visual representation of the likelihood of the word coming after another word:
+<img src="markov-chain-visual-represenetation.JPG">
+
+**What are Markov Chains?** 
+A stochastic model that describes a sequence of possible events. For predicting the probability of an event we need to know the state of the previous event. (Stochastic means random)
+
+**Directed Graphs:** In computer science, a graph is a kind of data structure that is visually represented as a set of nodes or circles connected by lines. When the connector lines look like arrows and have directions, we call them directed graphs. 
+- The circles represent the states of our model. 
+- The connectors are also called __Edges.__
+- A state refers to a certain condition of the present moment.
+<img src="states-in-graph.JPG">
+
+Now we want to see how POS can be shown as a states. if we show nouns by NN, verbs by VB, and others by O, we can make a graph like this: 
+<img src="transition-probabilities.jpg">
+The edges of the photo above show the weight probability of each transition from one state to another.
+__Markov Property:__ It says the probability of the next event, only depends on the current event. It helps to keep the model simple. It doesn't need the information of all previous states, only the current one.
+Having the graph, we can create a table (matrix) that saves the values of the transition probabilities, called __Transition Matrix.__
+<img src="transition-matrix.JPG">
+
+The transition matrix is an NxN matrix, where N is the number of states in the graph.
+- In the transition matrix, the sum of each row will be equal to 1.
+__Initial Probabilities:__ Because the model always looks at the previous word to find the transition probability, for the first word of the sentence, there is no previous word. For having that issue fixed, we add an __Initial State__ and show it like this:
+<img src="initial_probabilities.JPG">
+So the dimension is not NxN anymore. It is (N+1)x(N)
+So far we learned that we can show all of the states as a vector named Q, and we can show the transition matrix as the matrix A.
+<img src="markov-chain_summary.JPG">
+
+__Hidden Markov Models:__ It refers to the states that are hidden or not directly observable. For example, if we say Jump, Run, Fly, etc. as humans we know they are verbs, but the machine just sees the text, not the type of them. These three words are called observable to the machine. 
+<img src="observable-words.JPG">
+__Emission Probabilities:__ They describe the the transition from the hidden states of  the Markov Model to the observables or the words of the corpus.
+<img src="emission-probabilities.JPG">
+We can also show a tabular representation of the emission probabilities. In this matrix, B, each row is associated with a hidden state, and a column belongs to each of the observables.
+<img src="emission-probability-matrix.JPG">
+
+For matrix B also, the summation of each row is 1.
+
+This is the summary:
+<img src="summary-of-hidden-markov-models.JPG">
+__How to calculate the transition probabilities?__
+To calculate the probabilities, we don't care about the words themselves in the corpus, we just need the POS tags. For example, if we want to see the probability of a word followed by a noun:
+- We calculate the number of occurrences of the combination. 
+- Then calculate the number of times the first tag (verb) occurred. 
+- The final probability is the first value divided by the second value. (in the following photo: 2/3)
+<img src="calculate-probabilities-visually.JPG">
+
+Here is how we formulate it:
+- Define the C function that is the count of each tag pairs.
+- The we calculate the P(t) function given the previous tag.
+<img src="transition-probability-formula.JPG">
+
+__Corpus Preparation:__ 
+1- First we add an "S" tag to the beginning of each sentence.
+2- Then we lowercase all characters.
+
+__IMPORTANT:__ In the transition matrix, each row shows the current state, and each column represents the next state.
+Here is how to populate the transition matrix:
+<img src="populating-transition-matrix.JPG">
+
+Now, after inputting all the count values, we should divide each count by the sum of each row.
+<img src="populating-transition-matrix-2.JPG">
+To avoid the problem of division by zero, we should __Smooth__ the values like this:
+<img src="smoothing-tranistion-probabilities.JPG">
+
+Remember, with smoothing, the total of each row is not exactly 1 anymore.
+
+- In real world examples, we don't apply smoothing to the first row of the matrix, because by doing this we say we don't mind a sentence starting with any POS including punctuation letters.
+
+__How to calculate the emission probabilites?__
+For calculating it, we need to do this (because it is the probability of each observable word vs the its tag):
+1- first we count each word
+2- then count the it's tag in the whole corpus
+3- divide first number by the second one. (in the following photo it is 2/3)
+<img src="emission-probabilities-calculation.JPG">
+
+Finally in the image below we see how to populate the emission matrix. (V is the size of the vocabulary)
+<img src="populating-emission-matrix.JPG">
+
 
 
 > Written with [StackEdit](https://stackedit.io/).
