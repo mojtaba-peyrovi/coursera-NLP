@@ -3,7 +3,7 @@
 ## Coursera NLP by deeplearning.ai
 
 ### Course 2: Natural Language Processing with Probabilistic Model:
-
+ __Week1 -  Autocorrect and Minimum Edit Distance:___
 What is autocorrect? An application that changes misspelled words into the correct ones. In this course we don't cover the words spelling correct but not being appropriate in the context. (e.g. Happy birthday my DEER friend, instead of DEAR friend.)
 
 #### Four Steps of Auto Correction:
@@ -63,7 +63,6 @@ print('candidate words : ', candidates)
 edits :  ['earz', 'darz', 'derz', 'deaz', 'dear']
 candidate words :  ['dear']
 ```
-
 ### Minimum Edit Distance:
 This is a tool to find out how similar two words or strings are. Given two words or strings, minimum edit distance is the minimum number of operations needed to transform one string into another. use cases are: spelling correction, document similarity, and machine translation, DNA sequencing. 
 
@@ -77,7 +76,7 @@ For each type of operation we consider the cost of insert as 1, cost of delete 1
 { "insert":1, "delete":1, "replace":2}
 
 In finding the minimum edit distance, we are trying to minimize the cost, which is the sum of all operation costs.
-<img src="simple_minimum_distance_calculation.JPG">
+photo: simple_minimum_distance_calculation.jpg
 
 ### Algorithm:
 We create a matrix where rows will be the source string and columns will be the target string.
@@ -87,13 +86,12 @@ D[2,3] = source[:2] -> target[:3]
 or
 D[i,j] = source[:i] -> target[:j]
 ```
-<img src="distance-matrix.JPG">
+photo: distance-matrix.jpg
 In order to fill the matrix with all transformation costs per character, we start from the top left corner, and calculate for the smallest number of characters (# which is zero) then we add 1, then 2, etc. to till the end of it. calculating the diagonal numbers has three ways:
 1- delete then insert
 2- insert then delete
 3- delete and insert at the same time
-we can calculate the cost for each method and use the minimum of them as the final cost. then we add one more character and keep doing the same calculations. 
-<img src-"cost-matrix-simple.JPG">
+we can calculate the cost for each method and use the minimum of them as the final cost. then we add one more character and keep doing the same calculations. photo: cost-matrix-simple.jpg
 
 #### The formulaic approach:
 after filling the first four cells on the top left corner, here is what we do for the rest of the cells:
@@ -110,21 +108,20 @@ calculate the following three costs:
 - D[i-1,j-1] + rep_cost  // if the characters are the same, the replacement cost will be zero
 
 Then find the minimum of them.
-<img src="minimum-edit-distance-formula.JPG">
+photo: minimum-edit-distance-formula.jpg
 
 When we input all numbers and add heatmap effect to it, we see that from the middle of the matrix to the end, we don't need any change. so, the numbers will repeat without any cost being added to them. (the reason is in this example both words end with "ay"
-<img src="minimum-edit-dictance-heatmap.JPG">
+photo:minimum-edit-dictance-heatmap.jpg
 This method is also called **Levennshtein.**
 
 In order to program this, we use **Dynamic Programming** or **Recursive programming** which solves the problem for a small portion, then uses the result of it to calculate the next iterations.
 
 ### Assignment notes:
 [THIS](https://norvig.com/spell-correct.html](https://norvig.com/spell-correct.html)) article has the whole code in Python.
-following photo is a good review of list comprehension in Python.
-<img src="python-list-comprehension.png">
 
-the photo below shows how to write word splits in list comprehension.
-<img src="python-list-comprehension_word_splits.png">
+photo: python-list-comprehension.png is a good review of list comprehension in Python.
+
+photo: python-list-comprehension_word_splits.png shows how to write word splits in list comprehension.
 
 __Week2: Part of Speech Tagging (POS tagging):__
 
@@ -225,6 +222,50 @@ For calculating it, we need to do this (because it is the probability of each ob
 Finally in the image below we see how to populate the emission matrix. (V is the size of the vocabulary)
 <img src="populating-emission-matrix.JPG">
 
+#### notebook notes:
+- sorted() is python a function that can sort any iterable like list in an ascending order.
+- np.sum() you can sum up the rows, or columns. parameters are (axis=1, keepdims=True) it will sum up ROWS and result in the same dimensions as the original matrix.
+The photo below, shows the difference between keepdims false and true:
+<img src="keepdims_false_vs_true.JPG">
+- If we want to normalize the matrix we can do this way:
+<img src="normalizing_matrix_numpy.JPG">
+Notice that first we calculated the sum of each row, then divided each row by the sum of the row. after the normalization, the sum of each row must be 1.
+- np.diag() will save the diagonal values of the matrix into a numpy array. notice that the shape of it would be (3,). we can reshape it (because we need to have it to be the same shape as the row sum (3,1) we can reshape like this:
+```python
+d = np.diag(transition_matrix)
+d.shape
+> (3,)
+d = np.reshape(d, (3,1))
+d.shape
+>(3,1)
+```
+- __np.fill_diagonal(transition_matrix, d):__ it will fill the diagonals with the new value of d
+- __np.vectorize():__ It performs the vectorized operation (elementwise) e.g. d = d + np.vectorize(math.log)(rows_sum)
 
+### Vitrebi Algorithm:
+We learned how to find the most probable WORD given a previous word, using the transition and emission matrices. Vitrebi algorithm will help finding the most probable SENTENCE, given the previous sentence.
+The process starts from the initial state, and moves to the first word (I love to learn) that cannot be emitted from any other state. (word I) for calculating its probability we multiply transition value(0.3), by emission value(0.5).
+<img src="vitrebi-initial-move.JPG">
+The next step is to find the probability for the word love. There are two ways for love to have been seen (one from VB, and one from NN) we calculate both probabilities and pick the higher value (VB in this example)
+<img src="vitrebi-word-love.JPG">
+The next step is, from the second word to the third one (from Love to To) through O state we can get there. (0.2 x 0.4 = 0.08)
+and finally from To to the last word Learn, which is 0.5 x 0.2 = 0.1. 
+The total probability is the product of all probabilities. 
+<img src="vetrabi-total-probability.JPG">
+Viterbi algo, calculates the probabilities for several sentences at the same time using matrix representation of each sequence.
 
-> Written with [StackEdit](https://stackedit.io/).
+### Steps of Vitrebi:
+__1) Initialization:__
+We need to make two auxiliary matrices C, D.
+Here is how we calculate matrix C:
+<img src="vitrebi-matrix-c.JPG">
+and here is how we initialize matrix D:
+<img src="vetrebi-matrix-d-initialization.JPG">
+__2) Forward Pass:__ 
+Here is how we do forward pass:
+<img src="vitrebi-forward-pass.JPG">
+__3) Backward Pass:__
+Here is the backward pass:
+<img src="vitrebi-backward-pass.JPG">
+ 
+> Written with [StackEdit](https://stackedit.io/)
