@@ -268,4 +268,26 @@ __3) Backward Pass:__
 Here is the backward pass:
 <img src="vitrebi-backward-pass.JPG">
  
-> Written with [StackEdit](https://stackedit.io/)
+
+#### Assignment Notebook
+- A good way of showing the process of a loop, is to print the iteration number on specific iterations. for example below loops through words and on each 50,000 rows, it prints the row no. 
+```python
+for word_tag in training_corpus:
+        
+        # Increment the word_tag count
+        i += 1
+        
+        # Every 50,000 words, print the word count
+        if i % 50000 == 0:
+            print(f"word count = {i}")
+   ```
+
+
+
+
+
+
+
+
+
+> Written with [StackEdit](https://stackedit.io/).
