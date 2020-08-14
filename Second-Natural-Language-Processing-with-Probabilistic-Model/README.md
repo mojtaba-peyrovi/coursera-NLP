@@ -282,8 +282,27 @@ for word_tag in training_corpus:
             print(f"word count = {i}")
    ```
 
+__N-Grams Model:__
+#### Text Corpus: 
+A large database of text documents, such as all pages on Wikipedia, all books from one author, or all tweets from one account.
+#### Language Model:
+A language model is a tool that calculates the probabilities of sentences. We should think of a sentence as a sequence of words. It can also calculate the probability of a word given a history of the previous words. 
+N-Grams model can be used to autocomplete a sentence.
+<img src="n-grams-flow.JPG">
+Language models can be used in different cases:
+<img src="n-grams-other-applications.JPG">
 
-
+### What is an N-Gram?
+N-Gram is a sequence of N words. Given a sentence, we can generate Unigrams, Bigrams, and Trigrams which are combinations of one, two, three words next to each other in the same order as the sentence.
+<img src="n-grams-1-2-3.JPG">
+We can also have sequences with more than three words. Here is how we show them:
+<img src="sequence-notation.JPG">
+Here is how we calculate the probability of each unigram:
+<img src="unigram-probability.JPG">
+For calculating the bigrams probability, we can say the probability of  a word to be "am" given the previous word as "I" is the count of times where "I am" repeated in the corpus, divided by count of times where "I" occurred.
+<img src="bigrams-probability.JPG">
+Similarly, we can calculate the trigrams' probability:
+<img src="trigrams-probability.JPG">
 
 
 
