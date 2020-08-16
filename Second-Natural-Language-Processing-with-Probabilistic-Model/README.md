@@ -304,8 +304,37 @@ For calculating the bigrams probability, we can say the probability of  a word t
 Similarly, we can calculate the trigrams' probability:
 <img src="trigrams-probability.JPG">
 
+### Sequence Probabilities:
+What is the probability of a sequence? For doing this, we need to calculate P(A, B) which is the probability of word A and B. which will be the probability of A, times the probability of B give A, like this:
+<img src="chain-rule.JPG">
+If we extrapolate it to more than two words, we get this:
+<img src="sequence-probability.JPG">
+Here is an example:
+<img src="sequence-probability-example.JPG">
 
+The problem with this approach is, most of the time, the exact sequence doesn't exist in the training corpus. The longer the sentence, the least the likelihood of a sentence to appear in the corpus. For fixing this we should apply **Approximation** which would be using ONLY the probability of the previous word, rather than the whole sequence behind the given word.	
+<img src="sequence-probability-approximation.JPG">
 
+Or we can say we just consider the product of the probability of the bigrams.
+
+#### Another Issue:
+If we are considering the bigrams only, what happens to the beginning and ending of a sentence?
+In order to solve it we simply ad a token to the beginning of the sentence, so that the first word has a predecessor.
+<img src="start-of-sentence-token.JPG">
+Similarly, for Trigrams, the first two word won't get enough predecessors to have any probability. for this case we add the token twice to the beginning of the sentence.
+<img src="starting-token-n-grams.JPG">
+For the end of the word, similarly we add </s> token. For </s> we don't need to add more than once for N-grams for any N value.
+
+### Steps:
+1- Count matrix:.JPG">
+
+<img src="count-matrix.JPG">
+
+2- probability matrix:
+<img src="probability-matrix,JPG">
+
+3- Language model:
+<img src="language-model.JPG">
 
 
 
