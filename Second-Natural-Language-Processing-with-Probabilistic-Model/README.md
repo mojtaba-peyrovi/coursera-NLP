@@ -3,7 +3,7 @@
 ## Coursera NLP by deeplearning.ai
 
 ### Course 2: Natural Language Processing with Probabilistic Model:
- __Week1 -  Autocorrect and Minimum Edit Distance:___
+ __Week1 -  Autocorrect and Minimum Edit Distance:__
 What is autocorrect? An application that changes misspelled words into the correct ones. In this course we don't cover the words spelling correct but not being appropriate in the context. (e.g. Happy birthday my DEER friend, instead of DEAR friend.)
 
 #### Four Steps of Auto Correction:
@@ -402,6 +402,39 @@ word_counts = {'happy': 5, 'because': 3, 'i': 2, 'am': 2, 'learning': 3, '.': 1}
 
 vocabulary = Counter(word_counts).most_common(M)	
 ```
- 
+ __Week4 -  Word embeddings with neural networks:__
+This week is about training our own word vectors, or embeddings. The purpose for making word vectors, is to convert words to numerical values, so that we can do mathematics on the words.
 
+**One-Hot Vector:** For each word in the corpus, we create a column of zeros and only the row in which the word is associated with, the value will be 1.
+<img src="one-hot-vector.JPG">
+The problem with these vectors, is they are so huge and sparse, and take so much processing memory to be digested. Also, this representation doesn't carry the meaning of the word.
+
+**How word embedding works?** 
+First, if we have a 1D axis for representing whether each word is negative, or positive, then we can distribute our words along this axis. like this:
+<img src="1d-embedding.JPG">
+Then we can find another concept and add another axis to represent the second concept, and then we can distribute the words in this 2d surface. 
+<img src="2d-embedding.JPG">
+By having these two dimensions, we can represent each words as a vector of length two.
+
+**How to Create Word Embeddings?** 
+To create a word embedding, we need two things:
+1- َ A text corpus: The corpus must be consisting of words about a specific topic. The context of a word refers to other words or a combination of words said to occur around a particular word. The corpus can be related to a specific industry which means for marketing industry, using all words in our contents would be relevant.
+2- An embedding method: we use machine learning to train the embeddings.
+In order to feed the corpus into the ML model, we need to make a numerical representation of the corpus using the one-hot vector or simple unique integer assignment.
+
+**Word Embedding Methods:**
+1- Word2vec: It uses a shallow neural network to generate word embeddings. It uses the following methods;
+ - continuous bag of words (CBOW)
+ - continuous skpi-gram / skip-gram with negative sampling (SGNS)
+2- Global Vectors by Stanford
+3- FastText by Facebook: This model supports out of vocabulary words.
+
+More advanced based on deep Learning, contextual embeddings. In the previous methods, a word always has the same embedding, but in deep learning techniques, a word will have different embedding depending on the context.
+1- BERT by Google
+2- Elmo by Allen Institute for AI
+3- GPT-2 by OpenAI
+
+Some useful links here:
+[Thai BERT](https://www.slideshare.net/kobkrit/thai-text-processing-by-transfer-learning-using-transformer-bert)
+[Another Thai BERT LIB](https://github.com/ThAIKeras/bert)
 > Written with [StackEdit](https://stackedit.io/).
