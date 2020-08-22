@@ -437,4 +437,55 @@ More advanced based on deep Learning, contextual embeddings. In the previous met
 Some useful links here:
 [Thai BERT](https://www.slideshare.net/kobkrit/thai-text-processing-by-transfer-learning-using-transformer-bert)
 [Another Thai BERT LIB](https://github.com/ThAIKeras/bert)
-> Written with [StackEdit](https://stackedit.io/).
+
+[Also BERT for THAI](https://nlp.h-its.org/bpemb/th/)
+
+
+### CBOW (Continuous Bag Of Words) model:
+As mentioned, in order to transform the data from the corpus into the embedding ML model, we should handle missing words. It can be predicted based on the surrounding words.
+<img src="cbow.JPG">
+Here is how it works. If two unique words are regularly surrounded by a similar set of words in various sentences, then those two words tend to be close in their meanings. or we can say **They are related semantically.**
+<img src="cbow-concept.JPG">
+The training example can be created per word, by calling the main word **"Center Word"**, then we define the word before and after the word as **"Context Words"**, and the total context and center words is called **"Window".** 
+<img src="cbow-training-example.JPG">
+To train the model, we need a set of examples. Similar to CNN, the window will move word by word and the center word will be learned based on the context.
+<img src="cbow-training-process.JPG">
+This training will be done by neural network. but before that we need to clean the data and tokenize them. Here are the steps:
+
+Steps Of Cleaning and Tokenization:
+---
+ - Letter case: we should make sure the model is case insensitive, by converting all letters to either all lowercase or all uppercase.
+ - Punctuation: We can replace them all with a specific character such as full stop.
+ - Numbers: If the numbers don't mean much in the text, we can just drop them all, if not, we can replace them with a number token.
+ - Special Symbols: its usually safer to drop them.
+ - Special Words: emojis, and hashtags. we can for example treat an emoji as a new word.
+ <img src="cleaning-tokenization.JPG">
+ Here is an exmaple of how to deal with emojis:
+ <img src="tokenization-example.JPG">
+ And below is the python code to handle it:
+ First: import libraries:
+ <img src="tokenization-python-emoji-libraries.JPG">
+ Second: replace all punctuation will . using Regex:
+ <img src="tokenization-python-emoji-regex.JPG">
+ Third: Tokenization
+ <img src="tokenize.JPG">
+ Fourth: convert the tokens including emojis into lowercase:
+ <img src="lowercase.JPG">
+ This corpus now is ready to be used in model training.
+ ### Create the sliding window in Python:
+ Here is the function which takes two parameters:
+ - words: which is an array of tokens (words)
+ - C: the **Context Half Size** which means the number of the words we get from each side of the center word.
+ <img src="get-window-function.JPG">
+ In the function we used **yield** instead of **return** because return will immediately exit the function and return the values, but yield pauses the function and returns the values and will continue running if more values are needed (The object created by yield is generator object)
+ Here is the outcome of the function:
+ <img src="get-windows-outcome.JPG">
+ ### Transforming center words into vectors:
+ First, we create a Vocabulary array from corpus which is a set of unique words in the corpus.
+ Second: we convert each word as a one-hot vector. and we can input this matrix into the model:
+ <img src="center-words-into-vectors.JPG">
+ ### Transforming context words into vectors:
+ For this, we just calculate the average of hot-vectors for each context.
+ <img src="context-to-vector.JPG">
+  
+ 
