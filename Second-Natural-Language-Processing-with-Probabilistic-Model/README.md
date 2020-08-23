@@ -488,4 +488,35 @@ Steps Of Cleaning and Tokenization:
  For this, we just calculate the average of hot-vectors for each context.
  <img src="context-to-vector.JPG">
   
- 
+Architecture of CBOW Model:
+-
+We make a neural network with one hidden layer and the Vx1 matrix of all words (formed as vectors) as the input layer, and the output layer is a Vx1 vector that represents the center word.
+<img src="cbow-architecture.JPG">
+The size of the hidden layer should be the size of the word embedding.
+
+The activation function for the first layer should be Relu, and the hidden layer Softmax.
+<img src="cbow-matrix-sizes-explained.JPG">
+**Batch Processing:** To have a faster processing, we can feed samples in groups rather than one by one. The batch size is the hyperparameter that we will define as "m" for the algorithm. The input values will be batched m by m as separate matrices. In order to have the next calculation steps, we need to adjust the sizing of b vector to be also in batches of size m. The process of converting a vector to a set of m vectors is called **Broadcasting.** It gets done automatically in Numpy when we convert a matrix to a column vector with the same number of rows.
+<img src="cbow-matrix-sizes-batching-explained.JPG">
+At the end we will have a mxV matrix as Y hat, and it is the same size as the input matrix X and each X value will get a predicted value as its counterpart Y hat.
+<img src="cbow-matrix-sizes-batching-explained-2.JPG">
+
+- About Softmax: It gets the values of the matrix and converts them to values between 0-1 that can be interpreted as probabilities.
+<img src="softmax.JPG">
+Here is an example of softmax calculation:
+<img src="softmax-example.JPG">
+**Cost Function:** For classification models we mostly use **cross-entroy loss** which comes most of the time hands in hands with Softmax activation function.
+<img src="cross-entroy.JPG">
+
+**How to extract the word embedding from a trained CBOW model?**
+ We have three options:
+ 1- Each column of the matrix W1 corresponds to one word of the input matrix X, in the same order. 
+<img src="word-embedding-extraction-op1.JPG">
+2- Each row in W2 corresponds to a word in matrix X.
+<img src="word-embedding-extraction-op2.JPG">
+3- Take the average of values in option1,2
+<img src="word-embedding-extraction-op3.JPG">
+
+**Evaluating the Model:**
+we can do it in two ways:
+1- Intrinsic: 
