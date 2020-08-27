@@ -519,4 +519,9 @@ Here is an example of softmax calculation:
 
 **Evaluating the Model:**
 we can do it in two ways:
-1- Intrinsic: 
+1- Intrinsic: evaluates how well the word embedding capture the semantic and syntactic relationship between the words. semantic refers to the meaning of of the words, and syntactic refers to the grammar. 
+One way of doing intrisic check, is by **Analogies** which means giving examples and asking the system to bring similar words (tokyo to Japan is similar to Paris to? .....) .This approach has a disadvantage that one scenario can have more than one possible answer.
+<img src="intrinsic-analogies.JPG">
+The other way is to make a clustering algorithm
+<img src="intrinsic-clustering.JPG">
+2- Extrinsic: Evaluates the usefulness of a word embedding from an actual external example. Extrinsic methods are the ultimate test to see if the word embedding the the classification are actually useful. 
