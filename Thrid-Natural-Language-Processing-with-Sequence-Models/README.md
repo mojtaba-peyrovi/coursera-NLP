@@ -38,6 +38,46 @@ Another example is importing numpy.ndarray like this:
 jax.interpreters.xla.DeviceArray
 ```
 
+### Dense vs ReLu:
+Dense layer means when all nodes are fully connected to the neurons of the next layer.
+<img src="dense_layers.JPG">
+ReLu layer typically follows a dense layer and transforms any negative values to zero before sending them on to the next layer.
+<img src="relu-layer.JPG">
+
+### Serial Layer:
+A composition of dense and activation layers (sublayers) that operate in a sequence to implement the forward propagation calculation. we can see it as having the whole model being compressed in one layer.
+<img src="serial-layer.JPG">
+
+### Embedding Layer:
+In NLP tasks we normally include an embedding layer which takes the vocabulary words with an index assigned to each, and maps it with a set of parameters in a determined dimension. Then we need to train the model to bring the best values for the embeddings to have the best performance. For the embedding layer we have a matrix of weights of size equal **(vocabulary size x embedding dimension)**.
+The size of the embedding can be treated as a hyperparameter in the model, (parameters we manually add similar to learning rate)
+
+### Mean Layer:
+It simply comes after embedding layer, and calculates the mean of the embedding parameters for each word (row). for example if we have 4 vocabularies, and 100 embedding dimensions, the output of embedding output size is (4x100) and it feeds the mean layer and returns a vector of size 100. 
+<img src="mean-layer.JPG">
+
+As a summary:
+>Embedding is trainable using an embedding layer
+>Mean layer gives a vector representation
+
+### Training the NNT:
+For training, we need to calculate the gradient (differential). Trax can do it simply as seen here:
+<img src="gradients-in-trax.JPG">
+to train the the model we use grad() method. This method takes two sets of parameters. First set is parameters for the grad function, the second set for the function returned by grad. Then all we need to do, is to iterate over grads and each time deduct the weights by the grad times learning rate (alpha) until we get the best convergence. We actually made forward and backward propagation in a single line of code.
+<img src="training-grads.JPG">
+
+### Notebook notes:
+- There is new way of writing a loop that I didn't know. Instead of saying:
+```python
+[i for i in range(0,size(a))] # a is a list
+```
+We can simply say:
+```python
+[*range(size(a))]
+```
+- **Shuffling the examples for each epoch is known to reduce variance, making the models more general and overfit less.**
+
+
 
 
 
