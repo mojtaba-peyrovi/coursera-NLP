@@ -77,6 +77,56 @@ We can simply say:
 ```
 - **Shuffling the examples for each epoch is known to reduce variance, making the models more general and overfit less.**
 
+ __Week2 -  Natural Language Processing with Sequence Models:__
+The traditional N-grams models need so much space and memory to calculate the probability of all combinations of words in order to calculate the probability of the whole sentence. Also, sometimes the dependency of two words which are far apart has to be calculated which takes a long sequence of calculations. 
+Instead of the N-Grams which is so limited, we can use RNN (Recurrent Neural Networks) 
+Below is an example that N-grams can return so many inappropriate words, whereas RNN can return a much closer answer.
+<img src="rnn-vs-ngrams.JPG">
+
+RNN doesn't look at only the last few words, but it propagates the whole sentence and context no matter the length.
+<img src="rnn-full-sentence-propagation.JPG">
+
+The magic of RNN is that the information of each word (Steps above) will be multiplied by the same weight matrix W to calculate the next step.
+
+### Different Architectures for Differente AI Tasks:
+**1- One to One:** If the model takes a set of low or non-correlated features X, and returns a single value of output y.
+<img src="one-to-one-model.JPG">
+**2-One to Many:** When the model takes a single input, and generates a set of values. Caption generation is a good example:
+<img src="one-to-many-model.JPG">
+
+**3-Many to One:**  When the model takes a set of input and returns a single values. like sentiment analysis:
+<img src="many-to-one-model.JPG">
+**4-Many to Many:** When a model takes a set of input and returns a set of output, like machine translation.
+<img src="many-to-many-model.JPG">
+
+### The Basic RNN:
+For each word, we have to calculate the h (hidden state) which is calculated by using the activation function, with the parameters of h of the previous step, and x of the current step, dot product with the weight matrix plus the bias term (b). And having the h, and activation function, we can calculate the value of y hat (prediction)
+<img src="vanilla_rnn.JPG">
+
+Here is what happens to the first word, to calculate the hidden state (h) of the first word, and finally find y hat.
+<img src="first_word_rnn.JPG">
+
+### Notes from the Notebook:
+<img src="basic-rnn-formula.JPG">
+
+#### Joining (Concatenation): 
+ A join along the vertical boundary is called a  _horizontal concatenation_  or  _horizontal stack_.
+
+Visually, it looks like this:-  𝑊ℎ=[𝑊ℎℎ  |  𝑊ℎ𝑥]
+
+In order to calculate the concatenation of two matrix, numpy has two functions:
+```python
+w_h1 = np.concatenate((w_hh, w_hx), axis=1)
+w_h2 = np.hstack((w_hh, w_hx))
+```
+Joining along a horizontal boundary is called a vertical concatenation or vertical stack. Visually it looks like this:
+
+For horizontal, similarly numpy has two functions:
+```python
+ax_1 = np.concatenate(
+    (h_t_prev, x_t), axis=0)
+ax_2 = np.vstack((h_t_prev, x_t))``
+```
 
 
 
