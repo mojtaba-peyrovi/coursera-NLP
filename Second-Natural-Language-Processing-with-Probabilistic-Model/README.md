@@ -166,7 +166,7 @@ A stochastic model that describes a sequence of possible events. For predicting 
 <img src="states-in-graph.JPG">
 
 Now we want to see how POS can be shown as a states. if we show nouns by NN, verbs by VB, and others by O, we can make a graph like this: 
-<img src="transition-probabilities.jpg">
+<img src="transition-probabilities.JPG">
 The edges of the photo above show the weight probability of each transition from one state to another.
 __Markov Property:__ It says the probability of the next event, only depends on the current event. It helps to keep the model simple. It doesn't need the information of all previous states, only the current one.
 Having the graph, we can create a table (matrix) that saves the values of the transition probabilities, called __Transition Matrix.__
@@ -174,8 +174,10 @@ Having the graph, we can create a table (matrix) that saves the values of the tr
 
 The transition matrix is an NxN matrix, where N is the number of states in the graph.
 - In the transition matrix, the sum of each row will be equal to 1.
+
 __Initial Probabilities:__ Because the model always looks at the previous word to find the transition probability, for the first word of the sentence, there is no previous word. For having that issue fixed, we add an __Initial State__ and show it like this:
 <img src="initial_probabilities.JPG">
+
 So the dimension is not NxN anymore. It is (N+1)x(N)
 So far we learned that we can show all of the states as a vector named Q, and we can show the transition matrix as the matrix A.
 <img src="markov-chain_summary.JPG">
