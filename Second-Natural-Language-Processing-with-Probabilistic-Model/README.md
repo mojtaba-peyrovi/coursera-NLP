@@ -339,7 +339,7 @@ For the end of the word, similarly we add </s> token. For </s> we don't need to 
 <img src="count-matrix.JPG">
 
 2- probability matrix:
-<img src="probability-matrix,JPG">
+<img src="probability-matrix.JPG">
 
 3- Language model:
 <img src="language-model.JPG">
@@ -414,14 +414,18 @@ vocabulary = Counter(word_counts).most_common(M)
 This week is about training our own word vectors, or embeddings. The purpose for making word vectors, is to convert words to numerical values, so that we can do mathematics on the words.
 
 **One-Hot Vector:** For each word in the corpus, we create a column of zeros and only the row in which the word is associated with, the value will be 1.
+
 <img src="one-hot-vector.JPG">
+
 The problem with these vectors, is they are so huge and sparse, and take so much processing memory to be digested. Also, this representation doesn't carry the meaning of the word.
 
 **How word embedding works?** 
 First, if we have a 1D axis for representing whether each word is negative, or positive, then we can distribute our words along this axis. like this:
 <img src="1d-embedding.JPG">
+
 Then we can find another concept and add another axis to represent the second concept, and then we can distribute the words in this 2d surface. 
 <img src="2d-embedding.JPG">
+
 By having these two dimensions, we can represent each words as a vector of length two.
 
 **How to Create Word Embeddings?** 
@@ -454,10 +458,13 @@ As mentioned, in order to transform the data from the corpus into the embedding 
 <img src="cbow.JPG">
 Here is how it works. If two unique words are regularly surrounded by a similar set of words in various sentences, then those two words tend to be close in their meanings. or we can say **They are related semantically.**
 <img src="cbow-concept.JPG">
+
 The training example can be created per word, by calling the main word **"Center Word"**, then we define the word before and after the word as **"Context Words"**, and the total context and center words is called **"Window".** 
 <img src="cbow-training-example.JPG">
+
 To train the model, we need a set of examples. Similar to CNN, the window will move word by word and the center word will be learned based on the context.
 <img src="cbow-training-process.JPG">
+
 This training will be done by neural network. but before that we need to clean the data and tokenize them. Here are the steps:
 
 Steps Of Cleaning and Tokenization:
@@ -468,30 +475,39 @@ Steps Of Cleaning and Tokenization:
  - Special Symbols: its usually safer to drop them.
  - Special Words: emojis, and hashtags. we can for example treat an emoji as a new word.
  <img src="cleaning-tokenization.JPG">
+ 
  Here is an exmaple of how to deal with emojis:
  <img src="tokenization-example.JPG">
+ 
  And below is the python code to handle it:
  First: import libraries:
  <img src="tokenization-python-emoji-libraries.JPG">
+ 
  Second: replace all punctuation will . using Regex:
  <img src="tokenization-python-emoji-regex.JPG">
+ 
  Third: Tokenization
  <img src="tokenize.JPG">
  Fourth: convert the tokens including emojis into lowercase:
+ 
  <img src="lowercase.JPG">
+ 
  This corpus now is ready to be used in model training.
  ### Create the sliding window in Python:
  Here is the function which takes two parameters:
  - words: which is an array of tokens (words)
  - C: the **Context Half Size** which means the number of the words we get from each side of the center word.
  <img src="get-window-function.JPG">
+ 
  In the function we used **yield** instead of **return** because return will immediately exit the function and return the values, but yield pauses the function and returns the values and will continue running if more values are needed (The object created by yield is generator object)
  Here is the outcome of the function:
  <img src="get-windows-outcome.JPG">
+ 
  ### Transforming center words into vectors:
  First, we create a Vocabulary array from corpus which is a set of unique words in the corpus.
  Second: we convert each word as a one-hot vector. and we can input this matrix into the model:
  <img src="center-words-into-vectors.JPG">
+ 
  ### Transforming context words into vectors:
  For this, we just calculate the average of hot-vectors for each context.
  <img src="context-to-vector.JPG">
@@ -500,19 +516,24 @@ Architecture of CBOW Model:
 -
 We make a neural network with one hidden layer and the Vx1 matrix of all words (formed as vectors) as the input layer, and the output layer is a Vx1 vector that represents the center word.
 <img src="cbow-architecture.JPG">
+
 The size of the hidden layer should be the size of the word embedding.
 
 The activation function for the first layer should be Relu, and the hidden layer Softmax.
 <img src="cbow-matrix-sizes-explained.JPG">
+
 **Batch Processing:** To have a faster processing, we can feed samples in groups rather than one by one. The batch size is the hyperparameter that we will define as "m" for the algorithm. The input values will be batched m by m as separate matrices. In order to have the next calculation steps, we need to adjust the sizing of b vector to be also in batches of size m. The process of converting a vector to a set of m vectors is called **Broadcasting.** It gets done automatically in Numpy when we convert a matrix to a column vector with the same number of rows.
 <img src="cbow-matrix-sizes-batching-explained.JPG">
+
 At the end we will have a mxV matrix as Y hat, and it is the same size as the input matrix X and each X value will get a predicted value as its counterpart Y hat.
 <img src="cbow-matrix-sizes-batching-explained-2.JPG">
 
 - About Softmax: It gets the values of the matrix and converts them to values between 0-1 that can be interpreted as probabilities.
 <img src="softmax.JPG">
+
 Here is an example of softmax calculation:
 <img src="softmax-example.JPG">
+
 **Cost Function:** For classification models we mostly use **cross-entroy loss** which comes most of the time hands in hands with Softmax activation function.
 <img src="cross-entroy.JPG">
 
@@ -520,8 +541,10 @@ Here is an example of softmax calculation:
  We have three options:
  1- Each column of the matrix W1 corresponds to one word of the input matrix X, in the same order. 
 <img src="word-embedding-extraction-op1.JPG">
+
 2- Each row in W2 corresponds to a word in matrix X.
 <img src="word-embedding-extraction-op2.JPG">
+
 3- Take the average of values in option1,2
 <img src="word-embedding-extraction-op3.JPG">
 
@@ -530,6 +553,8 @@ we can do it in two ways:
 1- Intrinsic: evaluates how well the word embedding capture the semantic and syntactic relationship between the words. semantic refers to the meaning of of the words, and syntactic refers to the grammar. 
 One way of doing intrisic check, is by **Analogies** which means giving examples and asking the system to bring similar words (tokyo to Japan is similar to Paris to? .....) .This approach has a disadvantage that one scenario can have more than one possible answer.
 <img src="intrinsic-analogies.JPG">
+
 The other way is to make a clustering algorithm
 <img src="intrinsic-clustering.JPG">
+
 2- Extrinsic: Evaluates the usefulness of a word embedding from an actual external example. Extrinsic methods are the ultimate test to see if the word embedding the the classification are actually useful. 
