@@ -128,7 +128,46 @@ ax_1 = np.concatenate(
 ax_2 = np.vstack((h_t_prev, x_t))``
 ```
 
+#### Cost Function for RNN:
+Here is how we calculate the cost for each (x,y) pair.
+<img src="rnn-cost-function.JPG">
 
+In order to have the total cost calculated, we should calculate the average of all with respect to time. which means summation of all cost values at each timestamp, over the total cost (T)
+
+<img src="ttl-cost-rnn.JPG">
+
+#### How do we implement RNN in TensorFlow:
+There is a function called scan() that takes a function, and implements it to all elements in a list.
+<img src="scan-function.JPG">
+
+#### Notebook Notes:
+In numpy we can save an array as a .npy file. And here is how we load them:
+```python
+predictions = numpy.load('predictions.npy')
+targets = numpy.load('targets.npy')
+```
+The targets is a 2d array, and the predictions are 3d (one more dimension for the size of the vocabulary used) Because the perplexity value is the summation of predictions x  targets, in order to calculate the perplexity (ppx), we need to convert the 2d targets into the same dimensions as the predictions, (we should convert each value to a one hot vector) like this:
+```python
+reshaped_targets = trax.layers.one_hot(targets, predictions.shape[-1]) 
+#trax's one_hot function takes the input as one_hot(x, n_categories, dtype=optional)
+```
+predictions.shape[-1] returns the third dimension of the predictions (256)
+
+### GRU (Gated Recurrent Units):
+This type of model, has some parameters to allow us specify, how much information to forget from the past, and how much information to extract from the current input.
+
+GRU uses relevance and updated gates, to remember only important prior information.
+
+<img src="gru-example.JPG">
+
+The architecture of the GRU unit is shown below:
+<img src="gru-architecture.JPG">
+
+GRU helps RNN with the problem of "Loss of relevant information for long sequences of words."
+
+As a summary, GRU decides how to update the hidden state and it helps preserving important information.
+
+GRU's are simple versions of LSTM models.
 
 
 > Written with [StackEdit](https://stackedit.io/).
