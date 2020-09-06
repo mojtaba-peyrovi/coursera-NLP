@@ -106,15 +106,28 @@ Imagine we have a corpus of positive and negative tweets. If A is labeled as a p
 
 means the count of positive labelled tweets, divide by the number of all tweets in the corpus. 
 
-Now, if there is a tweet B that contains the word "Happy" but tagged in both positive and negative tweets, like the photo word-happy-case.jpg, the probability of a word to contain the word "happy" and also being positive is the area of intersection divided by the area of the whole corpus. For example if there is 20 tweets, and three of them contain the word and also labelled positive, the probability will be 3/20 = 0.15
+Now, if there is a tweet B that contains the word "Happy" but tagged in both positive and negative tweets, like the photo below:
 
-If we just consider the tweets that contain the word "happy" and as we see, three of them are labelled positive, and one is labelled negative, as seen in photo bayes-rules.jpg, then the probability of the tweet being positive and containing the word will be 3/4 = 0.75	
+<img src="word-happy-case.JPG"> 
+
+The probability of a word to contain the word "happy" and also being positive is the area of intersection divided by the area of the whole corpus. For example if there is 20 tweets, and three of them contain the word and also labelled positive, the probability will be 3/20 = 0.15
+
+If we just consider the tweets that contain the word "happy" and as we see, three of them are labelled positive, and one is labelled negative, as seen this photo:
+
+<img src="bayes-rules.JPG">
+
+The probability of the tweet being positive and containing the word will be 3/4 = 0.75	
 This simply means if we have a tweet, based on this training dataset, the likelihood of a tweet to be positive, if it contains the word "Happy", is 75%.
 
-We can also calculate the probability of a tweet to be contain the word "Happy" if it is positive. photo: bayes-rules-2.jpg
+We can also calculate the probability of a tweet to be contain the word "Happy" if it is positive. 
+
+<img src="bayes-rules-2.JPG">
+
 In this case we have 13 tweets in total, and three of them have the word "Happy" so the probability will be 3/13 = 0.231
 
-If we combine these two probabilities we can get the final definition of Bayes Rules seen at photo: bayes-rules-3.jpg
+If we combine these two probabilities we can get the final definition of Bayes Rules.
+
+<img src="bayes-rules-3.JPG">
 
 We can make is simpler by algebra and say Bayes Rule as:
 P(X|Y) = P(Y|X) * (P(X)/P(Y))
@@ -127,18 +140,34 @@ To implement it we need to to the following steps:
 1- count the unique words in all the corpus
 2- count the repetition of each word in both positive and negative tweets.
 3- sum up all positive counts and negative counts.
-4- then we create a new table called the table of conditional probabilities, in which every word in the vocabulary list, will have a P(word|Positive) and P(word|negative)  as seen in photo bayes-steps-1.jpg. In this table, the sum of positive values will be 1, so will the negative column.
+4- then we create a new table called the table of conditional probabilities, in which every word in the vocabulary list, will have a P(word|Positive) and P(word|negative)  
+
+<img src="bayes-steps-1.JPG">
+
+In this table, the sum of positive values will be 1, so will the negative column.
 5- In this table, the words with almost equal probability, don't add anything to the sentiment. What are really important to the model, are the words with big difference.
-6- Now we should calculate the product of positive over negative of each word and if the final result is bigger than one we say its moer probable for the sentence to be positive than negative. photo: bayes-steps-2.jpg (This value is called **Naive Bayes inference condition rule for binary classification**)
+6- Now we should calculate the product of positive over negative of each word and if the final result is bigger than one we say its more probable for the sentence to be positive than negative. 
+
+<img src="bayes-steps-2.JPG">
+
+(This value is called **Naive Bayes inference condition rule for binary classification**)
 
 #### One more issue to solve with Naive Bayes:
-No probability in the original formula should be zero. In order to avoid zeros, we will slightly change the main formula and it is called **Laplacian Smoothing.** The formula is in the photo laplacian-smoothing.jpg
-Now, back to the same example, instead of original naive bayes, we can calculate the probabilities using Laplacian smoothing. photo laplacian-smoothing-implementation.jpg
+No probability in the original formula should be zero. In order to avoid zeros, we will slightly change the main formula and it is called **Laplacian Smoothing.** 
+<img src="laplacian-smoothing.JPG">
+
+Now, back to the same example, instead of original naive bayes, we can calculate the probabilities using Laplacian smoothing. \
+
+<img src="laplacian-smoothing-implementation.JPG">
+
 After laplacian smoothing, no probability will be zero. 
 
 ### Log Likelihood: 
 #### Ratio of Probability:
-In photo bayes_step_2.jpg, we calculated the Niave bayes inference condition rule for binary classification which is called the **Log Likelihood**. Now, we have a table with a percentage of frequency for each word and since we use Laplacian smoothing, none of the frequency values is zero. 
+Below, we calculated the Niave bayes inference condition rule for binary classification which is called the **Log Likelihood**. 
+<img src="bayes_step_2.JPG">
+
+Now, we have a table with a percentage of frequency for each word and since we use Laplacian smoothing, none of the frequency values is zero. 
 Now we can calculate the ratio of probability like this: </br>
 <img src="https://render.githubusercontent.com/render/math?math=\ratio(W_{i}) = \frac{P(W_{i}|Pos)}{P(W_{i}|Neg)}" width="250" class="center"></br>
 
@@ -173,6 +202,7 @@ This technique captures the context around each word in the text, therefore it c
 **1- Word by Word approach:**
 The co-occurrence of two different words is the number of times they appear together in the corpus within a specific distance K. 
 <img src="word-by-word-co-occurrence.JPG">
+
 It shows that if we have k=2, the word "data" is related to the word "simple" with number 2 because two times in the corpus simple has been within the distance of 2 words from "data". For the example in the photo, the vector representation of the word "data" is [2, 1, 1, 0]
 The vector representation has n entries which can be between one, and the size of the vocabulary. 
 
@@ -244,6 +274,7 @@ A good example of using it is translating a vector for an English word, into a F
 We can create a subset of translations between the two languages, then using this transformation matrix, we can find the translation for any word.
 
 <img src="transformation_matrix_improvement.JPG"> 
+
 the photo shows how to start with a random R matrix, then in a loop try to minimize the loss function but comparing the translation with the real values.  (Transcript F means calculating the norm of the matrix, which is also called ** Frobenius Norm.**)  
 <img src="frobenius-norm.JPG">
 
