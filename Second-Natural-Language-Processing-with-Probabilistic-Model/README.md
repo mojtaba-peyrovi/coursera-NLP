@@ -76,7 +76,7 @@ For each type of operation we consider the cost of insert as 1, cost of delete 1
 { "insert":1, "delete":1, "replace":2}
 
 In finding the minimum edit distance, we are trying to minimize the cost, which is the sum of all operation costs.
-photo: simple_minimum_distance_calculation.jpg
+<img src="simple_minimum_distance_calculation.JPG">
 
 ### Algorithm:
 We create a matrix where rows will be the source string and columns will be the target string.
@@ -86,16 +86,19 @@ D[2,3] = source[:2] -> target[:3]
 or
 D[i,j] = source[:i] -> target[:j]
 ```
-photo: distance-matrix.jpg
+<img src="distance-matrix.JPG">
+
 In order to fill the matrix with all transformation costs per character, we start from the top left corner, and calculate for the smallest number of characters (# which is zero) then we add 1, then 2, etc. to till the end of it. calculating the diagonal numbers has three ways:
 1- delete then insert
 2- insert then delete
 3- delete and insert at the same time
-we can calculate the cost for each method and use the minimum of them as the final cost. then we add one more character and keep doing the same calculations. photo: cost-matrix-simple.jpg
+we can calculate the cost for each method and use the minimum of them as the final cost. then we add one more character and keep doing the same calculations. 
+
+<img src="cost-matrix-simple.JPG">
 
 #### The formulaic approach:
 after filling the first four cells on the top left corner, here is what we do for the rest of the cells:
-1- **fillout the top and left edges:** we can use this formula:
+1- **Fillout the top and left edges:** we can use this formula:
 ```python
 D[i,j] = D[i-1,j] + del_cost  # for the left column
 D[i,j] = D[i, j-1] + ins_cost  # for the top row 
@@ -108,10 +111,12 @@ calculate the following three costs:
 - D[i-1,j-1] + rep_cost  // if the characters are the same, the replacement cost will be zero
 
 Then find the minimum of them.
-photo: minimum-edit-distance-formula.jpg
+<img src="minimum-edit-distance-formula.JPG">
 
 When we input all numbers and add heatmap effect to it, we see that from the middle of the matrix to the end, we don't need any change. so, the numbers will repeat without any cost being added to them. (the reason is in this example both words end with "ay"
-photo:minimum-edit-dictance-heatmap.jpg
+
+<img src="minimum-edit-dictance-heatmap.JPG">
+
 This method is also called **Levennshtein.**
 
 In order to program this, we use **Dynamic Programming** or **Recursive programming** which solves the problem for a small portion, then uses the result of it to calculate the next iterations.
@@ -119,9 +124,12 @@ In order to program this, we use **Dynamic Programming** or **Recursive programm
 ### Assignment notes:
 [THIS](https://norvig.com/spell-correct.html](https://norvig.com/spell-correct.html)) article has the whole code in Python.
 
-photo: python-list-comprehension.png is a good review of list comprehension in Python.
+The photo below is a good review of list comprehension in Python.
 
-photo: python-list-comprehension_word_splits.png shows how to write word splits in list comprehension.
+<img src="python-list-comprehension.png">
+
+The image below shows how to write word splits in list comprehension.
+<img src=" python-list-comprehension_word_splits.png">
 
 __Week2: Part of Speech Tagging (POS tagging):__
 
