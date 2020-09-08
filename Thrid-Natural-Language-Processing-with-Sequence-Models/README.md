@@ -169,5 +169,14 @@ As a summary, GRU decides how to update the hidden state and it helps preserving
 
 GRU's are simple versions of LSTM models.
 
+### BI-Directional RNN Architecture:
+When the flow of the information can move from beginning to end and vice versa. Going backwards is like predicting now from the future.
+<img src="bi-directional-rnn.JPG">
+In order to predict y hat, we should calculate both directions' hidden states, and use the formula below to get the value of y hat for each state:
+<img src="bi-directional-rnn-calculation.JPG">
 
+### Deep RNN:
+Deep RNN is similar to a regular deep neural network. They have a layer that saves the input sequence X, and multiple additional layers. They are just RNN's stacked together.
+<img src="deep-rnn.JPG">
+ 
 > Written with [StackEdit](https://stackedit.io/).
