@@ -226,6 +226,16 @@ this model can find entities such as geolocations, names of places, dates, etc. 
 NER has so many applications"
 <img src="ner-application.JPG">
 
+ __Week4 -  Natural Language Processing with Sequence Models:__
+
+Now we can learn about another type of neural networks called "Siamese Networks" which consists of two identical neural networks which are merged at the end. This architecture has many applications in NLP.
+This architecture, helps the system to find out sentences which have no words in common, but he meaning of them are the same, or vice versa. 
+<img src="siamese-networks-example.JPG">
+
+Siamese networks try to find the difference or similarity between two sentences considering their context and calculating a single similarity score.
+
+This kind of applications are useful for example in search engines to find if queries are asked before but in different wordings? or even signatures similarity in a handwriting. 
+<img src="siamese-networks-application.JPG">
 
 
 
