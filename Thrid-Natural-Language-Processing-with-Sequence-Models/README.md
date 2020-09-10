@@ -179,4 +179,57 @@ In order to predict y hat, we should calculate both directions' hidden states, a
 Deep RNN is similar to a regular deep neural network. They have a layer that saves the input sequence X, and multiple additional layers. They are just RNN's stacked together.
 <img src="deep-rnn.JPG">
  
+ __Week3 -  RNNs and Vanishing Gradients:__
+RNN has two problems:
+1- Struggles with longer sequences
+2- Prone to vanishing or exploding gradients 
+In RNN the first element or word of the sequence doesn't have so much effect on the final word or the output. The photo below shows how orange part relating to the first word, gets smaller and smaller:
+<img src="rnn-vanishing-gradient.JPG">
+
+[Here](https://blog.paperspace.com/intro-to-optimization-in-deep-learning-gradient-descent/) is a nice article about Gradient Descent concept.
+
+### Notebook Notes:
+The back prop presents a problem as the gradient of activation functions can be very small. Multiplied together across many layers, their product can be vanishingly small! This results in weights not being updated in the front layers and training not progressing.
+<img src="vanishing-gradeient-example.JPG">
+
+- full explanation in this notebook: **C3_W3_Lecture_Notebook_Vanishing_Gradients**
+
+The best solution for this problem, is LSTM architecture.
+
+### LSTM Architecture:
+LSTM is a powerful method that learns when to remember,  and when to forget. This way, LSTM can remember the entire sequence of data. LSTM loops back again after each epoch and it makes the gates to allow gradients to flow unchanged. Each hidden state has three gates.
+Here is how the three gates work:
+<img src="LSTM-example.JPG">
+
+Below there are three gates:
+1- it starts with the c on the right, then we have first gate which decides what to forget using sigmoid:
+<img src="LSTM-forget-gate.JPG">
+
+2 - second gate is input gate which decides what to store in the cell, using a sigmoid layer to choose what values to update, and a tanh layer to select for the new values to be added.
+<img src="LSTM-input-layer.JPG">
+
+3- output gate that takes the previous results and uses another sigmoid and tanh layer to decide what to generate as the output.
+<img src="LSTM-output-gate.JPG">
+
+Below we see some applicaitons of LSTM in real world:
+<img src="LSTM-application.JPG">
+
+[Here](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) is  a good article about LSTM model. 
+
+### Named Entity Recognition(NER):
+A fast and efficient way to scan text for certain kinds of information.
+<img src="ner-intro.JPG">
+
+this model can find entities such as geolocations, names of places, dates, etc. and other words will be tagged as filler words O:
+<img src="ner-sample.JPG">
+
+NER has so many applications"
+<img src="ner-application.JPG">
+
+
+
+
+
+
+
 > Written with [StackEdit](https://stackedit.io/).
