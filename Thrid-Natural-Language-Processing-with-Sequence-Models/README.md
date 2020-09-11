@@ -237,9 +237,31 @@ Siamese networks try to find the difference or similarity between two sentences 
 This kind of applications are useful for example in search engines to find if queries are asked before but in different wordings? or even signatures similarity in a handwriting. 
 <img src="siamese-networks-application.JPG">
 
+Here is a sample Siamese Network architecture:
+<img src="siamese-networks-architecture.JPG">
 
 
+This is just an example. not all siamese networks should use LSTM. 
+> Important: Both sub-networks share identical parameters. So, we only need to train one set of weights.
 
+v1, v2 are the two output vectors and we can find their cosine similarity score, and if it is close to 1 the vectors are similar, if close to -1 the vectors are not similar.
+
+In order to have the loss function for the network, we calculate the difference between the cosine similarities of sentence 1 vs the main sentence(Anchor), and sentence 2 vs the main sentence, and the goal will be to minimize the difference.
+<img src="siamese-networks-loss-function.JPG">
+
+### Triplets: 
+The combination of the three components explained above, (anchor, positive, negation sentences) is called a Triplet.
+
+### One Shot Training:
+For example if we want to compare signatures with a specific signature to authenticate the person. we train the model once, and any new signatures come, we just calculate the similarity between the new sample and the main sample and predict the class. This model doesn't need to be retrained.
+<img src="one-shot-training.JPG">
+
+In order to train the model, we use siamese networks. 
+- First we prepare the batches in a way that 	first instance of batch one, is the duplicate of the first instance of batch two. And second instances are also identical. remember within the same batch there is no similar instances. 
+<img src="one-shot-training-prepare-batches.JPG">
+
+Here are the steps to test the model:
+<img src="one-shot-training-test.JPG">
 
 
 > Written with [StackEdit](https://stackedit.io/).
